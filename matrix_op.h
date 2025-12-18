@@ -23,3 +23,15 @@ void mat_elem_mul(
     double C[SIZE][SIZE]
 );
 
+
+void mat_mul(
+    const double A[SIZE][SIZE],
+    const double B[SIZE][SIZE],
+    double C[SIZE][SIZE]
+);//C = A * B
+
+void mat_transpose(
+    const double A[SIZE][SIZE],
+    double T[SIZE][SIZE]
+);
+
