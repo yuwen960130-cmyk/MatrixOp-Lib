@@ -1,8 +1,7 @@
 #include "matrix_op.h"
 #include <stdio.h>
 
-
-//Segment 1: Utility Functions
+//Utility
 void mat_copy(const double src[SIZE][SIZE], double dst[SIZE][SIZE]) {
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
@@ -30,8 +29,7 @@ void mat_print(const char *title, const double A[SIZE][SIZE]) {
     printf("\n");
 }
 
-
-//Segment 2: Basic Operations
+//Basic Matrix Operations
 void mat_add(const double A[SIZE][SIZE], const double B[SIZE][SIZE], double C[SIZE][SIZE]) {
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
@@ -56,7 +54,28 @@ void mat_elem_mul(const double A[SIZE][SIZE], const double B[SIZE][SIZE], double
     }
 }
 
-//Segment 3: Linear Algebra Operations
+//Linear Algebra Operations
+void mat_mul(const double A[SIZE][SIZE], const double B[SIZE][SIZE], double C[SIZE][SIZE]) {
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            double sum = 0.0;
+            for (int k = 0; k < SIZE; k++) {
+                sum += A[i][k] * B[k][j];
+            }
+            C[i][j] = sum;
+        }
+    }
+}
+
+void mat_transpose(const double A[SIZE][SIZE], double T[SIZE][SIZE]) {
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            T[j][i] = A[i][j];
+        }
+    }
+}
+
+//Advanced Operations
 double mat_det2x2(double a11, double a12, double a21, double a22) {
     return a11 * a22 - a12 * a21;
 }
@@ -65,14 +84,17 @@ double mat_det3x3(const double A[SIZE][SIZE]) {
     double a = A[0][0], b = A[0][1], c = A[0][2];
     double d = A[1][0], e = A[1][1], f = A[1][2];
     double g = A[2][0], h = A[2][1], i = A[2][2];
+
+    /* det = a(ei - fh) - b(di - fg) + c(dh - eg) */
     return a * (e * i - f * h) - b * (d * i - f * g) + c * (d * h - e * g);
 }
 
 void mat_adjoint(const double A[SIZE][SIZE], double adj[SIZE][SIZE]) {
-    double C[SIZE][SIZE];
+    double cof[SIZE][SIZE];
 
     for (int r = 0; r < SIZE; r++) {
         for (int c = 0; c < SIZE; c++) {
+            /* minor 2x2 */
             double m[2][2];
             int mi = 0;
 
@@ -89,13 +111,15 @@ void mat_adjoint(const double A[SIZE][SIZE], double adj[SIZE][SIZE]) {
 
             double minor_det = mat_det2x2(m[0][0], m[0][1], m[1][0], m[1][1]);
             double sign = ((r + c) % 2 == 0) ? 1.0 : -1.0;
-            C[r][c] = sign * minor_det;
+            cof[r][c] = sign * minor_det;
         }
     }
 
-    mat_transpose(C, adj);
+    /* adj(A) = transpose(cofactor(A)) */
+    mat_transpose(cof, adj);
 }
 
+//Inverse
 bool mat_inverse(const double A[SIZE][SIZE], double inv[SIZE][SIZE]) {
     const double EPS = 1e-12;
     double det = mat_det3x3(A);

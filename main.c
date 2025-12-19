@@ -1,28 +1,36 @@
 #include "matrix_op.h"
 #include <stdio.h>
 
-//Segment 1: Test Data
+//Segment 1: Prepare test data
 static void prepare_matrices(double A[SIZE][SIZE], double B[SIZE][SIZE]) {
     double a[SIZE][SIZE] = {
-        {1, 2, 3},
-        {0, 1, 4},
-        {5, 6, 0}
+        { 1,  2,  3},
+        { 0,  1,  4},
+        { 5,  6,  0}
     };
+
     double b[SIZE][SIZE] = {
-        {-2, 1, 0},
-        { 3, 0, 1},
-        { 4, 5, 6}
+        {-2,  1,  0},
+        { 3,  0,  1},
+        { 4,  5,  6}
     };
+
     mat_copy(a, A);
     mat_copy(b, B);
 }
 
-//Segment 2: Full Feature Tests
+//Segment 2: Full tests
 static void run_full_tests(const double A[SIZE][SIZE], const double B[SIZE][SIZE]) {
     double C[SIZE][SIZE];
 
     mat_add(A, B, C);
     mat_print("A + B =", C);
+
+    mat_sub(A, B, C);
+    mat_print("A - B =", C);
+
+    mat_elem_mul(A, B, C);
+    mat_print("A ¢X B (element-wise) =", C);
 
     mat_mul(A, B, C);
     mat_print("A * B =", C);
@@ -50,6 +58,7 @@ static void run_full_tests(const double A[SIZE][SIZE], const double B[SIZE][SIZE
     }
 }
 
+//Segment 3: main()
 int main(void) {
     double A[SIZE][SIZE], B[SIZE][SIZE];
 
@@ -58,6 +67,7 @@ int main(void) {
     mat_print("B =", B);
 
     run_full_tests(A, B);
-    printf("Stage 3 OK (Full assignment).\n");
+    printf("All tests completed.\n");
     return 0;
 }
+
