@@ -49,3 +49,15 @@ static void run_full_tests(const double A[SIZE][SIZE], const double B[SIZE][SIZE
         printf("A is singular (det=0). No inverse.\n\n");
     }
 }
+
+int main(void) {
+    double A[SIZE][SIZE], B[SIZE][SIZE];
+
+    prepare_matrices(A, B);
+    mat_print("A =", A);
+    mat_print("B =", B);
+
+    run_full_tests(A, B);
+    printf("Stage 3 OK (Full assignment).\n");
+    return 0;
+}
