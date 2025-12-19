@@ -56,3 +56,23 @@ void mat_elem_mul(const double A[SIZE][SIZE], const double B[SIZE][SIZE], double
     }
 }
 
+//Segment 3: Linear Algebra Operations
+void mat_mul(const double A[SIZE][SIZE], const double B[SIZE][SIZE], double C[SIZE][SIZE]) {
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            double sum = 0.0;
+            for (int k = 0; k < SIZE; k++) {
+                sum += A[i][k] * B[k][j];
+            }
+            C[i][j] = sum;
+        }
+    }
+}
+
+void mat_transpose(const double A[SIZE][SIZE], double T[SIZE][SIZE]) {
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            T[j][i] = A[i][j];
+        }
+    }
+}
